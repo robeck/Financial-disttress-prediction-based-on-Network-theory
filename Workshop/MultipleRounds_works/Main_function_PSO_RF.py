@@ -132,9 +132,9 @@ def main(round,modeltype,threshold):
         elif modeltype == 'single':
             # RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6])
             # Adaboost_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
-            # PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6])
+            PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
             # Adaboost_PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
-            # PSO_SVM_process(arglist[0],arglist[1],arglist[2])
+            # PSO_SVM_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
             # Adaboost_PSO_SVM_process(arglist[0],arglist[1],arglist[2])
             # Bagging_PSO_SVM_process(arglist[0],arglist[1],arglist[2])
             # GridSearch_SVC_process(arglist[0],arglist[1],arglist[2]) #grid search 的svc
@@ -148,17 +148,17 @@ def main(round,modeltype,threshold):
         # std_tag='Max'
         # lg = logit_(data_preprocess(traingdataframe,preddataframe,std_tag)) # features太多，矩阵歧义了
         "logistic"
-        std_tag = False
-        lr = logistic_(data_preprocess(traingdataframe,preddataframe,std_tag))
+        # std_tag = False
+        # lr = logistic_(data_preprocess(traingdataframe,preddataframe,std_tag))
         "nb"
-        std_tag = False
-        gnb = Navbay_(data_preprocess(traingdataframe,preddataframe,std_tag))
+        # std_tag = False
+        # gnb = Navbay_(data_preprocess(traingdataframe,preddataframe,std_tag))
         "SVC"
-        std_tag = True
-        svc = svc_(data_preprocess(traingdataframe,preddataframe,std_tag))
+        # std_tag = True
+        # svc = svc_(data_preprocess(traingdataframe,preddataframe,std_tag))
         "GBDT"
-        std_tag = False
-        gbdt = gbdt_(data_preprocess(traingdataframe, preddataframe, std_tag))
+        # std_tag = False
+        # gbdt = gbdt_(data_preprocess(traingdataframe, preddataframe, std_tag))
 
         "3. 功能性增强"
         "绘制1：calibration curve"
@@ -236,7 +236,7 @@ def Adaboost_PSO_RandomForest_process(traingdataframe,preddate,preddataframe,fin
     print('####################### 当前运行的模型的Adaboost-PSO-RandomForest #######################')
     files = f'/home/haozhic2/ListedCompany_risk/Results_output/Source_file/Adaboost_PSO_RandomForest_res_{call_datatags}_{features}_fin_round{round}.txt'
     with open(files, 'a+') as f:
-        f.write(f'这是PSO优化的随机森林模型，工作于{preddate} \n')
+        f.write(f'这是PSO优化的ADABOOST-随机森林模型，工作于{preddate} \n')
     best_parameters = Adaboost_PSO_RandomForest.PSO_RF_Model(Adaboost_PSO_RandomForest.input_data_process(traingdataframe, 'train_test'))
     Adaboost_PSO_RandomForest_model = Adaboost_PSO_RandomForest.Model_prediction(
         best_parameters,  # 模型参数
@@ -312,13 +312,13 @@ def GridSearch_SVC_process(traingdataframe,preddate,preddataframe,finposition,fe
     GS_SVM.gridsearch_svc(preddate,train_data,pred_data)
 
 if __name__ == '__main__':
-    models = 'None' # 'single','multiple' 单个模型还是多模型多进程,'None' 为比较模型
-    threshold = 0.0016
-    # rounds = 10
+    models = 'single' # 'single','multiple' 单个模型还是多模型多进程,'None' 为比较模型
+    threshold = 0.0005 # 0.0005， 0.0016
+    rounds = 10
     # rounds = 5
-    round = 1
+    # round = 1
     "单个main操作"
-    main(round,models,threshold)
+    # main(round,models,threshold)
 
 
     "多进程方法1"
@@ -333,13 +333,13 @@ if __name__ == '__main__':
     "多进程方法2"
     # Threshold = list(np.linspace(0.0005,0.01,10))
     # threshold = Threshold[1]
-    # for i,round in enumerate(range(rounds)):
-    #     # threshold = Threshold[i]
-    #     arg = (round,models,threshold) # 转化list
-    #     print(arg)
-    #     process = Process(target=main, args=arg)
-    #     print(f'process round {round} are working')
-    #     process.start()
-    #     time.sleep(5)
+    for i,round in enumerate(range(rounds)):
+        # threshold = Threshold[i]
+        arg = (round,models,threshold) # 转化list
+        print(arg)
+        process = Process(target=main, args=arg)
+        print(f'process round {round} are working')
+        process.start()
+        time.sleep(5)
         # process.join()
 

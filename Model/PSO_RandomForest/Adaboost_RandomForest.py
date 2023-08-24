@@ -204,6 +204,7 @@ def RF_model(data,finaldata,predicted_data,finposition,features,files,threshold)
     # RFE选择器
     # Finindicators,Train_X,pred_X = Feature_selection.recursive_featres_elimination_rf(Train_X,Train_y,pred_X,final_model,finposition,features)
     # RFE方案2
+    threshold = 0.0005 # 测试用
     Finindicators, Train_X, pred_X = Feature_selection.feature_engine_rfe(Train_X, Train_y, pred_X, final_model, finposition,features, threshold)
     ##############################################################################
     # 使用选择后的特征来拟合模型

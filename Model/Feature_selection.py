@@ -150,10 +150,10 @@ def feature_engine_rfe(TrainX,Trainy,predX,Model,finposition,features,threshold)
     #
     print(f'performance of model trained using all features: {rfe.initial_model_performance_}')
     # 绘制
-    rfe.feature_importances_.plot.bar(figsize=(20, 6))
-    plt.xlabel('Features')
-    plt.ylabel('Importance')
-    plt.show()
+    # rfe.feature_importances_.plot.bar(figsize=(20, 6))
+    # plt.xlabel('Features')
+    # plt.ylabel('Importance')
+    # plt.show()
     # 丢弃的特征
     print(f'the droped features : {rfe.features_to_drop_}')
     # 输出选中的特征

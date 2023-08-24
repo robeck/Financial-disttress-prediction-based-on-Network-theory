@@ -135,7 +135,7 @@ def PSO_RF_Model(data):
 
 
 "优化后的模型，参数加入，进行预测"
-def Model_prediction(params,date,traindata,finaldata,preddata,finposition,features,files):
+def Model_prediction(params,date,traindata,finaldata,preddata,finposition,features,files,threshold):
     '''
     :param params: 前面训练得到的最优参数
     :param traindata: 训练数据集（一般要进行process处理）
@@ -155,6 +155,9 @@ def Model_prediction(params,date,traindata,finaldata,preddata,finposition,featur
     "特征选择器进行特征选择"
     # RFE选择器
     Finindicators,Train_X,pred_X = Feature_selection.recursive_featres_elimination_rf(Train_X,Train_y,pred_X,clf,finposition,features)
+    # RFE方案2
+    # threshold = 0.0005  # 测试用
+    # Finindicators, Train_X, pred_X = Feature_selection.feature_engine_rfe(Train_X, Train_y, pred_X, clf, finposition,features, threshold)
     ##############################################################################
     clf.fit(Train_X,Train_y) # 样本训练,使用全部数据训练！
 

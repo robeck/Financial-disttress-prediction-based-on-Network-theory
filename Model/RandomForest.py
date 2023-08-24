@@ -87,75 +87,75 @@ def RF_model(data,finaldata,predicted_data,finposition,features,files,threshold)
 
     ####################################################################################################
     "1.使用学习曲线来选择合适的n_estimators参数"
-    scores = []
-    for i in tqdm(range(0,200,10)): #循环0-200，间隔10。这些都是estimators的设置
-        model = RandomForestClassifier(n_estimators=i+1,
-                                       n_jobs=-1,
-                                       random_state=0)
-        score = cross_val_score(model,Train_X,Train_y,cv=5).mean()
-        scores.append(score)
-    best_scores = max(scores)
-    best_n_estimators = (scores.index(max(scores))*10)+1
-    print(f'训练数据最优得分：{best_scores}, 其参数为{best_n_estimators}') #输出最优的得分，并且给出这个对应的n_estimators
-    # plt.plot(range(1,201,10),scores) # 参数和拟合得分绘制
-    # plt.show()
-
-    "1.1. 逐步寻优，优化其他参数：max_depth,min_samples_leaf,criterion..."
-    "调整max depth"
-    max_depth_params = {'max_depth':np.arange(1,30,1)}
-    model1 = RandomForestClassifier(n_estimators=best_n_estimators,
-                                   n_jobs=-1,
-                                   random_state=90)
-    GS = GridSearchCV(model1,max_depth_params,cv=5)
-    GS.fit(Train_X,Train_y)
-    best_max_scores = GS.best_score_
-    best_max_param = GS.best_params_
-    print(f'训练数据中max depthe调整下得分：{best_max_scores}, 其参数为：{best_max_param}')
-    # 如果max_depth的结果合适，可以进行参数设置
-
-    "调整min simple leaf"
-    min_sample_leaf_params = {'min_samples_leaf':np.arange(1,20,1)}
-    model2 = RandomForestClassifier(n_estimators=best_n_estimators,
-                                   n_jobs=-1,
-                                   max_depth=best_max_param.get('max_depth'),
-                                   random_state=90)
-    GS = GridSearchCV(model2,min_sample_leaf_params,cv=5)
-    GS.fit(Train_X,Train_y)
-    best_max_scores = GS.best_score_
-    best_min_sample_leaf_params = GS.best_params_
-    print(f'训练数据在min sample leaf 调整下得分：{best_max_scores}, 其参数为：{best_min_sample_leaf_params}')
-    # 如果min_sample_leaf结果合适，进行参数调整。标准一般看scores得分,越高越高
-
-    "调整criterion"
-    criterion_params = {'criterion':['gini','entropy']}
-    model3 = RandomForestClassifier(n_estimators=best_n_estimators,
-                                   n_jobs=-1,
-                                   max_depth=best_max_param.get('max_depth'),
-                                   min_samples_leaf=best_min_sample_leaf_params.get('min_samples_leaf'),
-                                   random_state=90)
-    GS = GridSearchCV(model3,criterion_params,cv=5)
-    GS.fit(Train_X,Train_y)
-    best_criterion_scores = GS.best_score_
-    best_criterion_para = GS.best_params_
-    print(f'训练数据中最优criterion得分，结合了全部数据：{best_criterion_scores},其参数为：{best_criterion_para}')
-    # 如果criterion合适，进行参数调整
-
-    "最终的final_model"
-    final_model = RandomForestClassifier(n_estimators=best_n_estimators,
-                                         n_jobs=-1,
-                                         max_depth=best_max_param.get('max_depth'),
-                                         min_samples_leaf=best_min_sample_leaf_params.get('min_samples_leaf'),
-                                         criterion=best_criterion_para.get('criterion'),
-                                         random_state=90)
-    final_model.fit(Train_X,Train_y)
-    best_final_scores = final_model.score(Train_X,Train_y)
-    print(f'将所有的参数汇总到一个模型中，其最后的训练得分为：{best_final_scores}')
-
-    "1.2. 总结上面的训练结果，训练数据，选出最合适的模型"
-    scores_lists = [best_max_scores,best_max_scores,best_criterion_scores,best_final_scores] # 得分list
-    model_lists = [model1,model2,model3,final_model] # model的lists
-    max_score_index = scores_lists.index(max(scores_lists)) # 提取上面模型得分list中最佳得分的位置索引
-    Output_model = model_lists[max_score_index] # 最优得分下，选出的参数模型
+    # scores = []
+    # for i in tqdm(range(0,200,10)): #循环0-200，间隔10。这些都是estimators的设置
+    #     model = RandomForestClassifier(n_estimators=i+1,
+    #                                    n_jobs=-1,
+    #                                    random_state=0)
+    #     score = cross_val_score(model,Train_X,Train_y,cv=5).mean()
+    #     scores.append(score)
+    # best_scores = max(scores)
+    # best_n_estimators = (scores.index(max(scores))*10)+1
+    # print(f'训练数据最优得分：{best_scores}, 其参数为{best_n_estimators}') #输出最优的得分，并且给出这个对应的n_estimators
+    # # plt.plot(range(1,201,10),scores) # 参数和拟合得分绘制
+    # # plt.show()
+    #
+    # "1.1. 逐步寻优，优化其他参数：max_depth,min_samples_leaf,criterion..."
+    # "调整max depth"
+    # max_depth_params = {'max_depth':np.arange(1,30,1)}
+    # model1 = RandomForestClassifier(n_estimators=best_n_estimators,
+    #                                n_jobs=-1,
+    #                                random_state=90)
+    # GS = GridSearchCV(model1,max_depth_params,cv=5)
+    # GS.fit(Train_X,Train_y)
+    # best_max_scores = GS.best_score_
+    # best_max_param = GS.best_params_
+    # print(f'训练数据中max depthe调整下得分：{best_max_scores}, 其参数为：{best_max_param}')
+    # # 如果max_depth的结果合适，可以进行参数设置
+    #
+    # "调整min simple leaf"
+    # min_sample_leaf_params = {'min_samples_leaf':np.arange(1,20,1)}
+    # model2 = RandomForestClassifier(n_estimators=best_n_estimators,
+    #                                n_jobs=-1,
+    #                                max_depth=best_max_param.get('max_depth'),
+    #                                random_state=90)
+    # GS = GridSearchCV(model2,min_sample_leaf_params,cv=5)
+    # GS.fit(Train_X,Train_y)
+    # best_max_scores = GS.best_score_
+    # best_min_sample_leaf_params = GS.best_params_
+    # print(f'训练数据在min sample leaf 调整下得分：{best_max_scores}, 其参数为：{best_min_sample_leaf_params}')
+    # # 如果min_sample_leaf结果合适，进行参数调整。标准一般看scores得分,越高越高
+    #
+    # "调整criterion"
+    # criterion_params = {'criterion':['gini','entropy']}
+    # model3 = RandomForestClassifier(n_estimators=best_n_estimators,
+    #                                n_jobs=-1,
+    #                                max_depth=best_max_param.get('max_depth'),
+    #                                min_samples_leaf=best_min_sample_leaf_params.get('min_samples_leaf'),
+    #                                random_state=90)
+    # GS = GridSearchCV(model3,criterion_params,cv=5)
+    # GS.fit(Train_X,Train_y)
+    # best_criterion_scores = GS.best_score_
+    # best_criterion_para = GS.best_params_
+    # print(f'训练数据中最优criterion得分，结合了全部数据：{best_criterion_scores},其参数为：{best_criterion_para}')
+    # # 如果criterion合适，进行参数调整
+    #
+    # "最终的final_model"
+    # final_model = RandomForestClassifier(n_estimators=best_n_estimators,
+    #                                      n_jobs=-1,
+    #                                      max_depth=best_max_param.get('max_depth'),
+    #                                      min_samples_leaf=best_min_sample_leaf_params.get('min_samples_leaf'),
+    #                                      criterion=best_criterion_para.get('criterion'),
+    #                                      random_state=90)
+    # final_model.fit(Train_X,Train_y)
+    # best_final_scores = final_model.score(Train_X,Train_y)
+    # print(f'将所有的参数汇总到一个模型中，其最后的训练得分为：{best_final_scores}')
+    #
+    # "1.2. 总结上面的训练结果，训练数据，选出最合适的模型"
+    # scores_lists = [best_max_scores,best_max_scores,best_criterion_scores,best_final_scores] # 得分list
+    # model_lists = [model1,model2,model3,final_model] # model的lists
+    # max_score_index = scores_lists.index(max(scores_lists)) # 提取上面模型得分list中最佳得分的位置索引
+    # Output_model = model_lists[max_score_index] # 最优得分下，选出的参数模型
 
 
     ########################################################################################################
@@ -178,22 +178,22 @@ def RF_model(data,finaldata,predicted_data,finposition,features,files,threshold)
     '''
     ######################################################################################################
     "4.最优模型实例化，"
-    if best_scores_total>best_final_scores: # 一次性gridsearch结果好于逐步的！
-        final_model = RandomForestClassifier(n_estimators=best_n_estimators,
-                                             n_jobs=-1,
-                                             max_depth=best_parameters.get('max_depth'),
-                                             min_samples_leaf=best_parameters.get('min_samples_leaf'),
-                                             criterion=best_parameters.get('criterion'),
-                                             random_state=90)
-        final_model.fit(Train_X, Train_y)
+    final_model = RandomForestClassifier(n_estimators=best_parameters.get('n_estimators'),
+                                         n_jobs=-1,
+                                         max_depth=best_parameters.get('max_depth'),
+                                         min_samples_leaf=best_parameters.get('min_samples_leaf'),
+                                         criterion=best_parameters.get('criterion'),
+                                         random_state=90)
+    final_model.fit(Train_X, Train_y)
 
-    else:
-        final_model = Output_model
-        final_model.fit(Train_X,Train_y)
+
 
     ##############################################################################
     "5.特征选择器进行特征选择"
     # RFE选择器
+    # Finindicators,Train_X,pred_X = Feature_selection.recursive_featres_elimination_rf(Train_X,Train_y,pred_X,final_model,finposition,features)
+    # 2. feature_engine RFE选择器
+    threshold = 0.0005  # 测试用
     Finindicators,Train_X,pred_X = Feature_selection.feature_engine_rfe(Train_X,Train_y,pred_X,final_model,finposition,features,threshold)
     ##############################################################################
     # 使用选择后的特征来拟合模型

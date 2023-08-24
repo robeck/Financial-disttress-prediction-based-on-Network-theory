@@ -15,7 +15,7 @@ from sklearn.svm import LinearSVC
 
 from sklearn.pipeline import make_pipeline # 引入pipeline工具
 from sklearn.metrics import accuracy_score,RocCurveDisplay # 使用sklearn计算准确率
-from sklearn.metrics import f1_score,precision_score,recall_score,roc_auc_score
+from sklearn.metrics import f1_score,precision_score,recall_score,roc_auc_score,roc_curve,auc
 from sklearn.preprocessing import StandardScaler,MinMaxScaler # 标准化模型
 from sklearn.model_selection import train_test_split # 数据划分
 from sklearn.model_selection import permutation_test_score # 分析交叉验证排序测试
@@ -98,10 +98,11 @@ def logistic_(datalist):
     precision = precision_score(predy, prediction, average='binary')
     recall = recall_score(predy, prediction, average='binary')
     f1_scores = f1_score(predy,prediction,average='binary')
-    auc_scores = roc_auc_score(predy,prediction_prob)
+    fpr, tpr, thresholds = roc_curve(predy, prediction)
+    aucscore = auc(fpr, tpr)
     print(f'logistic模型的accuracy是{accuracy}')
     print(f'logistic模型的f1是{f1_scores}')
-    print(f'logistic模型的auc是{auc_scores}')
+    print(f'logistic模型的auc是{aucscore}')
     print(f'logistic模型的precision是{precision}')
     print(f'logistic模型的recall是{recall}')
     # parms = logist.get_params()
@@ -133,10 +134,11 @@ def svc_(datalist):
     precision = precision_score(predy, prediction, average='binary')
     recall = recall_score(predy, prediction, average='binary')
     f1_scores = f1_score(predy,prediction,average='binary')
-    auc_scores = roc_auc_score(predy,prediction_prob)
+    fpr, tpr, thresholds = roc_curve(predy, prediction)
+    aucscore = auc(fpr, tpr)
     print(f'SVC模型的accuracy是{accuracy}')
     print(f'SVC模型的f1是{f1_scores}')
-    print(f'SVC模型的auc是{auc_scores}')
+    print(f'SVC模型的auc是{aucscore}')
     print(f'SVC模型的precision是{precision}')
     print(f'SVC模型的recall是{recall}')
 
@@ -175,10 +177,11 @@ def Navbay_(datalist):
     precision = precision_score(predy, prediction, average='binary')
     recall = recall_score(predy, prediction, average='binary')
     f1_scores = f1_score(predy,prediction,average='binary')
-    auc_scores = roc_auc_score(predy,prediction_prob)
+    fpr, tpr, thresholds = roc_curve(predy, prediction)
+    aucscore = auc(fpr, tpr)
     print(f'Gaussan_NB模型的accuracy是{accuracy}')
     print(f'Gaussan_NB模型的f1是{f1_scores}')
-    print(f'Gaussan_NB模型的auc是{auc_scores}')
+    print(f'Gaussan_NB模型的auc是{aucscore}')
     print(f'Gaussan_NB模型的precision是{precision}')
     print(f'Gaussan_NB模型的recall是{recall}')
 
@@ -209,10 +212,11 @@ def gbdt_(datalist):
     precision = precision_score(predy, prediction, average='binary')
     recall = recall_score(predy, prediction, average='binary')
     f1_scores = f1_score(predy,prediction,average='binary')
-    auc_scores = roc_auc_score(predy,prediction_prob)
+    fpr, tpr, thresholds = roc_curve(predy, prediction)
+    aucscore = auc(fpr, tpr)
     print(f'GBDT模型的accuracy是{accuracy}')
     print(f'GBDT模型的f1是{f1_scores}')
-    print(f'GBDT模型的auc是{auc_scores}')
+    print(f'GBDT模型的auc是{aucscore}')
     print(f'GBDT模型的precision是{precision}')
     print(f'GBDT模型的recall是{recall}')
 
