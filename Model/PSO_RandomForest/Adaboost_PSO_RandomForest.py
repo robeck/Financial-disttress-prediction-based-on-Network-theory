@@ -167,7 +167,9 @@ def Model_prediction(params, date, traindata, finaldata, preddata,finposition,fe
     # RFE选择器
     # Finindicators, Train_X,pred_X = Feature_selection.recursive_featres_elimination_rf(Train_X,Train_y,pred_X,clf,finposition,features)
     # RFE方案2
-    Finindicators, Train_X, pred_X = Feature_selection.feature_engine_rfe(Train_X,Train_y,pred_X,clf,finposition,features,threshold)
+    # Finindicators, Train_X, pred_X = Feature_selection.feature_engine_rfe(Train_X,Train_y,pred_X,clf,finposition,features,threshold)
+    # 无
+    Finindicators = 'None'
     ##############################################################################
     # 使用选择后的特征来拟合模型
     clf.fit(Train_X, Train_y)  # 样本训练,使用全部数据训练！

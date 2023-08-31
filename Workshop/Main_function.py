@@ -62,9 +62,9 @@ def main(round,modeltype,threshold):
     "读取数据时候，选择的数据标签"
     # call_datatags = 'full' # 使用标记欠缺数据，做为最终数据标签的
     # call_datatags = 'justed_financial'  # 只使用全部的金融指标！
-    call_datatags = 'adjusted_network'  # 筛选了部分网络指标如：只有Centrality
+    # call_datatags = 'adjusted_network'  # 筛选了部分网络指标如：只有Centrality
     # call_datatags = 'adjusted_financial'  # 筛选了部分金融指标，网络指标位置参数为5
-    # call_datatags = 'justed_financial'  # 只使用筛选了部分的金融指标
+    call_datatags = 'justed_adj_financial'  # 只使用筛选了部分的金融指标
     # call_datatags = 'adjusted_network_financial'  # 使用调整了网络，金融的指标 网络指标位置参数为5
     ##############################################################################################
     "控制读取new网络 还是旧网络的数据"
@@ -73,6 +73,9 @@ def main(round,modeltype,threshold):
     #############################################################################################
     "选择的参数个数keynum"
     keynum = 8 # 12,18,
+    "全局变量，对数据中fin指标位置，筛选特征个数进行调整"
+    finposition = 0  # 金融指标的起始位置只有中心性时候是 4；全部网络指标的时候 6；如果没有网络指标的话设置为 0
+    features = keynum  # 选择features的个数
 
 
     "0. 数据特征的汇总，我们在Main_feature_data_process中进行，读取该程序运行结果输出的文件即可,也可以再次根据需求运行"
@@ -106,9 +109,6 @@ def main(round,modeltype,threshold):
         1)这里进行循环，每次设置一个fin feature的个数
         2)这个数继续被使用到进行结果的标记中
         '''
-        "全局变量，对数据中fin指标位置，筛选特征个数进行调整"
-        finposition = 4  # 金融指标的起始位置只有中心性时候是 4；全部网络指标的时候 6；如果没有网络指标的话设置为 0
-        features = keynum  # 选择features的个数
         "1.1.1 参数设定"
         arglist = (traingdataframe,preddate,preddataframe,finposition,features,call_datatags,round,threshold) # 参数设定
         arglists.append(arglist)
@@ -133,7 +133,7 @@ def main(round,modeltype,threshold):
             # RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6])
             # Adaboost_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
             # PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6])
-            # Adaboost_PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
+            Adaboost_PSO_RandomForest_process(arglist[0],arglist[1],arglist[2],arglist[3],arglist[4],arglist[5],arglist[6],arglist[7])
             # PSO_SVM_process(arglist[0],arglist[1],arglist[2])
             # Adaboost_PSO_SVM_process(arglist[0],arglist[1],arglist[2])
             # Bagging_PSO_SVM_process(arglist[0],arglist[1],arglist[2])
@@ -312,7 +312,7 @@ def GridSearch_SVC_process(traingdataframe,preddate,preddataframe,finposition,fe
     GS_SVM.gridsearch_svc(preddate,train_data,pred_data)
 
 if __name__ == '__main__':
-    models = 'None' # 'single','multiple' 单个模型还是多模型多进程,'None' 为比较模型
+    models = 'single' # 'single','multiple' 单个模型还是多模型多进程,'None' 为比较模型
     threshold = 0.0016
     # rounds = 10
     # rounds = 5

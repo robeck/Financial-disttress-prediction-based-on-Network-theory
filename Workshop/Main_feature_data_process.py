@@ -324,16 +324,16 @@ def multiprocess_merge(start_date, end_date,tags,nettags):
                                                  'Net_cash_flow_growth_rate', 'Non_current_asset_to_equity_ratio',
                                                  'Tagible_assets_to_liabilities_ratio', 'Net_debt_to_equity_ratio',
                                                  'Current_asset_turnover_ratio', 'ST_value', 'Date']]  # 为了让ST——value
-    elif tags == 'justed_financial':
+    elif tags == 'justed_adj_financial':
         integrated_data_clean = integrated_data[['Stkcd', 'Return_on_equity',
                                                  'Return_on_assets', 'Net_asset_growth_rate',
                                                  'Operating_income_growth_rate',
-                                                 'Net_profit_growth_rate', 'Liquidity_ratio', 'Quick_ratio',
-                                                 'Cash_to_current_ratio',
-                                                 'Cash_debt_ratio', 'Ebitda_to_operatingincome_ratio', 'Expense_ratio',
-                                                 'Debt_to_assets_ratio', 'Turnover_account_receivable',
-                                                 'Total_asset_turnover_rate',
-                                                 'Operating_profit_ratio', 'Main_business_ratio', 'Invest_income_ratio',
+                                                 # 'Net_profit_growth_rate', 'Liquidity_ratio', 'Quick_ratio',
+                                                 # 'Cash_to_current_ratio',
+                                                 # 'Cash_debt_ratio', 'Ebitda_to_operatingincome_ratio', 'Expense_ratio',
+                                                 # 'Debt_to_assets_ratio', 'Turnover_account_receivable',
+                                                 # 'Total_asset_turnover_rate',
+                                                 # 'Operating_profit_ratio', 'Main_business_ratio', 'Invest_income_ratio',
                                                  'Non_operating_income_ratio', 'Currency_growth_rate',
                                                  'Net_cash_flow_growth_rate', 'Non_current_asset_to_equity_ratio',
                                                  'Tagible_assets_to_liabilities_ratio', 'Net_debt_to_equity_ratio',
